@@ -6,4 +6,5 @@ object Constants {
     const val HERO_DATABASE_TABLE = "hero_database_table"
     const val HERO_REMOTE_KEY_TABLE = "hero_remote_key_table"
     const val HERO_DATABASE = "hero_database"
+    const val HORIZONTAL_PAGER_COUNT = 3
 }
