@@ -10,7 +10,7 @@ import com.example.borutoapp.data.local.dao.HeroDao
 import com.example.borutoapp.data.local.dao.HeroRemoteKeyDao
 
 
-@Database(entities = [Hero::class, HeroRemoteKey::class], version = 1)
+@Database(entities = [Hero::class, HeroRemoteKey::class], version = 1, exportSchema = false)
 @TypeConverters(DatabaseConverter::class)
 abstract class BorutoDatabase : RoomDatabase() {
 
