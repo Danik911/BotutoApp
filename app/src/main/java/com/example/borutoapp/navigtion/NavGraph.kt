@@ -15,7 +15,7 @@ import com.example.borutoapp.util.Constants.HERO_ID_ARGUMENT_KEY
 fun SetupNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.Welcome.route
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(navHostController = navController)
