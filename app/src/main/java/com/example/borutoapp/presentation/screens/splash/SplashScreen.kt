@@ -1,8 +1,8 @@
 package com.example.borutoapp.presentation.screens.splash
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.window.SplashScreen
-import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,72 +18,70 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.borutoapp.R
 import com.example.borutoapp.ui.theme.Purple500
 import com.example.borutoapp.ui.theme.Purple700
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(navHostController: NavHostController) {
 
-    val degrees = remember { androidx.compose.animation.core.Animatable(0f) }
-
+    val degrees = remember {
+        Animatable(0f)
+    }
     LaunchedEffect(key1 = true) {
         degrees.animateTo(
             targetValue = 360f,
-            animationSpec = tween(
-                durationMillis = 1000,
-                delayMillis = 200
-            )
+            animationSpec = tween(durationMillis = 1000, delayMillis = 200)
         )
-    }
 
+    }
     Splash(degrees = degrees.value)
 }
 
 @Composable
 fun Splash(degrees: Float) {
-
-
     if (isSystemInDarkTheme()) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black),
-            contentAlignment = Alignment.Center
+                .background(Color.Black),
+            Alignment.Center
         ) {
             Image(
-                modifier = Modifier.rotate(degrees = degrees),
                 painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = "Icon logo"
-            )
+                contentDescription = stringResource(R.string.logo_icon),
+                Modifier.rotate(degrees),
+
+                )
         }
     } else {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Brush.verticalGradient(listOf(Purple700, Purple500))),
-            contentAlignment = Alignment.Center
+            Alignment.Center
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = "Icon logo"
+                contentDescription = stringResource(R.string.logo_icon),
+                Modifier.rotate(degrees),
             )
         }
     }
 
 }
 
-@Composable
 @Preview
-fun SplashPreview() {
+@Composable
+fun SplashScreenPreview() {
     Splash(0f)
 }
 
-@Composable
 @Preview(uiMode = UI_MODE_NIGHT_YES)
-fun SplashDarkPreview() {
+@Composable
+fun SplashScreenDarkPreview() {
     Splash(0f)
 }

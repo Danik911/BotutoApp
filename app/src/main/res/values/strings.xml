@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Boruto App</string>
+    <string name="logo_icon">Logo icon</string>
+    <string name="on_doarding_image">On boarding screen</string>
 </resources>
