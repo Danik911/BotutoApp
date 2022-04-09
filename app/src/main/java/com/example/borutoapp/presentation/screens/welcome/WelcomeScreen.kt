@@ -1,7 +1,5 @@
 package com.example.borutoapp.presentation.screens.welcome
 
-import android.content.Context
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,17 +17,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.borutoapp.R
 import com.example.borutoapp.data.domain.model.OnBoardingPage
+import com.example.borutoapp.navigtion.Screen
 import com.example.borutoapp.ui.theme.*
 import com.example.borutoapp.util.Constants.HORIZONTAL_PAGER_COUNT
 import com.google.accompanist.pager.*
 
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WelcomeScreen(navHostController: NavHostController) {
+fun WelcomeScreen(
+    navHostController: NavHostController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+) {
     val pages = listOf(
         OnBoardingPage.First,
         OnBoardingPage.Second,
@@ -61,7 +63,9 @@ fun WelcomeScreen(navHostController: NavHostController) {
             spacing = PAGER_INDICATOR_SPACING,
         )
         FinishButton(pagerState = pagerState, modifier = Modifier.weight(1f)) {
-
+            navHostController.popBackStack()
+            navHostController.navigate(Screen.Home.route)
+            welcomeViewModel.saveOnBoardingState(true)
         }
     }
 
@@ -71,7 +75,8 @@ fun WelcomeScreen(navHostController: NavHostController) {
 @Composable
 fun PagerScreen(onBoardingPage: OnBoardingPage) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = PADDING_EXTRA_LARGE),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -110,7 +115,11 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun FinishButton(pagerState: PagerState, modifier: Modifier, onClickFinish: () -> Unit) {
-    Row(modifier = modifier.fillMaxWidth().padding(horizontal = PADDING_EXTRA_LARGE)) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = PADDING_EXTRA_LARGE)
+    ) {
         AnimatedVisibility(visible = pagerState.currentPage == 2) {
             Button(
                 modifier = Modifier.fillMaxWidth(),

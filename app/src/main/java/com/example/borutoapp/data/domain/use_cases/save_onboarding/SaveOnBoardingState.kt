@@ -4,7 +4,7 @@ import com.example.borutoapp.data.domain.repository.Repository
 
 class SaveOnBoardingState(private val repository: Repository) {
 
-    suspend fun invoke(state: Boolean) {
+    suspend operator fun invoke(state: Boolean) {
         repository.saveOnBoardingState(state = state)
     }
 }

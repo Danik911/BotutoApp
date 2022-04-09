@@ -23,22 +23,22 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
         val onBoardingKey = booleanPreferencesKey(BORUTO_PREFERENCES_KEY)
     }
 
-    val dataStore = context.dataStorePref
+    private val dataStore = context.dataStorePref
 
 
     override suspend fun insertPreferences(data: Boolean) {
         dataStore.edit { preferences ->
-            preferences[PreferenceKey.onBoardingKey]
+            preferences[PreferenceKey.onBoardingKey] = data
         }
     }
 
     override fun readPreferences(): Flow<Boolean> {
         return dataStore.data
-            .catch { exeption ->
-                if (exeption is IOException) {
+            .catch { exception ->
+                if (exception is IOException) {
                     emit(emptyPreferences())
                 } else {
-                    throw exeption
+                    throw exception
                 }
             }
             .map { preferences ->

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 class ReadOnBoardingUseCase(private val repository: Repository) {
 
-    fun invoke(): Flow<Boolean> {
+    operator fun invoke(): Flow<Boolean> {
         return repository.readBoardingState()
     }
 }

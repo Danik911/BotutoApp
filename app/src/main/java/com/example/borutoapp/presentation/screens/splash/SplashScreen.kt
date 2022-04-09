@@ -1,6 +1,7 @@
 package com.example.borutoapp.presentation.screens.splash
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
@@ -9,9 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -20,13 +19,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.borutoapp.R
+import com.example.borutoapp.navigtion.Screen
 import com.example.borutoapp.ui.theme.Purple500
 import com.example.borutoapp.ui.theme.Purple700
 
 @Composable
-fun SplashScreen(navHostController: NavHostController) {
+fun SplashScreen(
+    navHostController: NavHostController,
+    splashViewModel: SplashViewModel = hiltViewModel()
+) {
+
+    val onBoardState by splashViewModel.onBoardingState.collectAsState()
 
     val degrees = remember {
         Animatable(0f)
@@ -36,7 +42,14 @@ fun SplashScreen(navHostController: NavHostController) {
             targetValue = 360f,
             animationSpec = tween(durationMillis = 1000, delayMillis = 200)
         )
+        navHostController.popBackStack()
+        Log.d("SplashScreen", onBoardState.toString())
 
+        if (onBoardState) {
+            navHostController.navigate(Screen.Home.route)
+        } else {
+            navHostController.navigate(Screen.Welcome.route)
+        }
     }
     Splash(degrees = degrees.value)
 }
