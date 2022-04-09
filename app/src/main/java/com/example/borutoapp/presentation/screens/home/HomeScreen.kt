@@ -1,6 +1,7 @@
 package com.example.borutoapp.presentation.screens.home
 
 import android.util.Log
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -11,13 +12,16 @@ import com.example.borutoapp.presentation.screens.splash.SplashViewModel
 
 @Composable
 fun HomeScreen(
-    navHostController: NavHostController,
-    viewModel: SplashViewModel = hiltViewModel()
+    navHostController: NavHostController
 ) {
 
-    val state by viewModel.onBoardingState.collectAsState()
+    Scaffold(
+        topBar = {
+            HomeAppTopBar(onSearchClicked = {})
+        }
+    ) {
 
-    LaunchedEffect(key1 = true) {
-        Log.d("HomeScreen", state.toString())
     }
 }
+
+
