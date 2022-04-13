@@ -12,4 +12,6 @@ object Constants {
 
     const val BORUTO_PREFERENCES_NAME = "boruto_preferences_name"
     const val BORUTO_PREFERENCES_KEY = "boruto_preferences_key"
+
+    const val ITEMS_PAGE_SIZE = 3
 }

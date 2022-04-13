@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.borutoapp.R
-import com.example.borutoapp.data.domain.model.OnBoardingPage
+import com.example.borutoapp.domain.model.OnBoardingPage
 import com.example.borutoapp.navigtion.Screen
 import com.example.borutoapp.ui.theme.*
 import com.example.borutoapp.util.Constants.HORIZONTAL_PAGER_COUNT

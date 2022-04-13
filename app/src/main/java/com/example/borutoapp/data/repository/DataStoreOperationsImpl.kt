@@ -1,4 +1,4 @@
-package com.example.borutoapp.data.local.preferences
+package com.example.borutoapp.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.borutoapp.data.domain.repository.DataStoreOperations
+import com.example.borutoapp.domain.repository.DataStoreOperationsAbstraction
 import com.example.borutoapp.util.Constants.BORUTO_PREFERENCES_KEY
 import com.example.borutoapp.util.Constants.BORUTO_PREFERENCES_NAME
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ import java.io.IOException
 
 val Context.dataStorePref: DataStore<Preferences> by preferencesDataStore(name = BORUTO_PREFERENCES_NAME)
 
-class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
+class DataStoreOperationsImpl(context: Context) : DataStoreOperationsAbstraction {
 
     private object PreferenceKey {
         val onBoardingKey = booleanPreferencesKey(BORUTO_PREFERENCES_KEY)

@@ -1,13 +1,12 @@
 package com.example.borutoapp.di
 
 import android.content.Context
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.borutoapp.data.domain.repository.DataStoreOperations
-import com.example.borutoapp.data.domain.repository.Repository
-import com.example.borutoapp.data.domain.use_cases.UseCases
-import com.example.borutoapp.data.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
-import com.example.borutoapp.data.domain.use_cases.save_onboarding.SaveOnBoardingState
-import com.example.borutoapp.data.local.preferences.DataStoreOperationsImpl
+import com.example.borutoapp.data.repository.DataStoreOperationsImpl
+import com.example.borutoapp.data.repository.Repository
+import com.example.borutoapp.domain.repository.DataStoreOperationsAbstraction
+import com.example.borutoapp.domain.use_cases.UseCases
+import com.example.borutoapp.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
+import com.example.borutoapp.domain.use_cases.save_onboarding.SaveOnBoardingState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +22,7 @@ object RepositoryMode {
 
     @Provides
     @Singleton
-    fun provideDataPreferences(@ApplicationContext context: Context): DataStoreOperations {
+    fun provideDataPreferences(@ApplicationContext context: Context): DataStoreOperationsAbstraction {
         return DataStoreOperationsImpl(context = context)
     }
 

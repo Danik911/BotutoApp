@@ -5,8 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.borutoapp.data.domain.model.Hero
-import retrofit2.http.DELETE
+import com.example.borutoapp.domain.model.Hero
 
 
 @Dao

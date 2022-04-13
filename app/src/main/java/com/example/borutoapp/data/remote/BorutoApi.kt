@@ -1,6 +1,6 @@
 package com.example.borutoapp.data.remote
 
-import com.example.borutoapp.data.domain.model.ApiResponse
+import com.example.borutoapp.domain.model.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

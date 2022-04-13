@@ -1,12 +1,12 @@
-package com.example.borutoapp.data.domain.paging_source
+package com.example.borutoapp.domain.paging_source
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.borutoapp.data.domain.model.Hero
-import com.example.borutoapp.data.domain.model.HeroRemoteKey
+import com.example.borutoapp.domain.model.Hero
+import com.example.borutoapp.domain.model.HeroRemoteKey
 import com.example.borutoapp.data.local.BorutoDatabase
 import com.example.borutoapp.data.remote.BorutoApi
 import java.lang.Exception
