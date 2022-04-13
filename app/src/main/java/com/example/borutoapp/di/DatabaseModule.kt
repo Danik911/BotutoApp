@@ -17,10 +17,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase( @ApplicationContext context: Context) =
-        Room.databaseBuilder(
+    fun provideDatabase(@ApplicationContext context: Context): BorutoDatabase {
+        return Room.databaseBuilder(
             context,
             BorutoDatabase::class.java,
             HERO_DATABASE
         ).build()
+    }
+
 }
