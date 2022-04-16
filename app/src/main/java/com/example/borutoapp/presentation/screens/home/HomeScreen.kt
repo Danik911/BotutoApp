@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.borutoapp.presentation.common.ListContent
 import com.example.borutoapp.presentation.components.RatingWidget
 import com.example.borutoapp.presentation.screens.splash.SplashViewModel
 
@@ -25,12 +26,11 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             HomeAppTopBar(onSearchClicked = {})
+        },
+        content = {
+            ListContent(hero = allHeroes, navController = navHostController)
         }
-    ) {
-
-        RatingWidget(modifier = Modifier.padding(8.dp), rating = 2.3)
-
-    }
+    )
 }
 
 
