@@ -60,7 +60,7 @@ class HeroRemoteMediator @Inject constructor(
                         heroRemoteKeyDao.deleteAllRemoteKeys()
                     }
                     val prevPage = response.prevPage
-                    val nextPage = response.nexPage
+                    val nextPage = response.nextPage
 
                     val remoteKeys = response.heroes.map { hero ->
                         HeroRemoteKey(
@@ -76,7 +76,7 @@ class HeroRemoteMediator @Inject constructor(
 
             }
             RemoteMediator.MediatorResult.Success(
-                endOfPaginationReached = response.nexPage == null
+                endOfPaginationReached = response.nextPage == null
             )
 
         } catch (e: Exception) {

@@ -1,8 +1,10 @@
 package com.example.borutoapp.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
@@ -14,15 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.borutoapp.R
@@ -33,7 +34,22 @@ import com.example.borutoapp.ui.theme.*
 import com.example.borutoapp.util.Constants.BASE_URL
 
 @Composable
-fun ListContent(hero: LazyPagingItems<Hero>, navController: NavHostController) {
+fun ListContent(heroes: LazyPagingItems<Hero>, navController: NavHostController) {
+
+    Log.d("ListContent", heroes.loadState.toString())
+    LazyColumn(
+        contentPadding = PaddingValues(PADDING_SMALL),
+        verticalArrangement = Arrangement.spacedBy(PADDING_SMALL)
+    ) {
+        items(items = heroes, key = { hero: Hero ->
+            hero.id
+        }) { hero ->
+            hero?.let {
+                HeroItem(hero = hero, navController = navController)
+            }
+
+        }
+    }
 
 }
 
@@ -98,7 +114,10 @@ fun HeroItem(hero: Hero, navController: NavHostController) {
                     modifier = Modifier.padding(top = PADDING_SMALL),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    RatingWidget(modifier = Modifier.padding(end = PADDING_SMALL), rating = hero.rating)
+                    RatingWidget(
+                        modifier = Modifier.padding(end = PADDING_SMALL),
+                        rating = hero.rating
+                    )
                     Text(
                         text = "(${hero.rating})",
                         textAlign = TextAlign.Center,
