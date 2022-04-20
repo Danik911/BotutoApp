@@ -77,6 +77,7 @@ fun handleListState(heroes: LazyPagingItems<Hero>): Boolean {
             }
 
             error != null -> {
+                EmptyScreen(error = error)
                 false
             }
             else -> {
