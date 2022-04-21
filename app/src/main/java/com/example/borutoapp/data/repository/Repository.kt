@@ -23,4 +23,8 @@ class Repository @Inject constructor(
     fun readBoardingState(): Flow<Boolean> {
         return dataStoreAbstraction.readPreferences()
     }
+
+    fun searchHeroes(query: String): Flow<PagingData<Hero>> {
+        return remoteDataSourceAbstraction.searchHero(query = query)
+    }
 }

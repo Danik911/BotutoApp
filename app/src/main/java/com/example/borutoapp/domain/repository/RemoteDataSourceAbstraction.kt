@@ -8,5 +8,5 @@ interface RemoteDataSourceAbstraction {
 
     fun getAllHeroes(): Flow<PagingData<Hero>>
 
-    fun searchHero(): Flow<PagingData<Hero>>
+    fun searchHero(query:String): Flow<PagingData<Hero>>
 }

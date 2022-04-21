@@ -8,6 +8,7 @@ import com.example.borutoapp.domain.use_cases.UseCases
 import com.example.borutoapp.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
 import com.example.borutoapp.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.example.borutoapp.domain.use_cases.save_onboarding.SaveOnBoardingState
+import com.example.borutoapp.domain.use_cases.search_heroes.SearchHeroesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryMode {
+object RepositoryModule {
 
 
     @Provides
@@ -33,7 +34,8 @@ object RepositoryMode {
         return UseCases(
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository = repository),
             saveReadOnBoardingUseCase = SaveOnBoardingState(repository = repository),
-            getAllHeroesUseCase = GetAllHeroesUseCase(repository = repository)
+            getAllHeroesUseCase = GetAllHeroesUseCase(repository = repository),
+            searchHeroes = SearchHeroesUseCase(repository = repository)
         )
     }
 
