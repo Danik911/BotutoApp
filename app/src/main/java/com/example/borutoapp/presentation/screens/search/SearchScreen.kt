@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.borutoapp.presentation.common.ListContent
 
 @Composable
 fun SearchScreen(
@@ -29,9 +30,13 @@ fun SearchScreen(
                     navHostController.popBackStack()
                 }
             )
+        },
+        content = {
+            ListContent(
+                heroes = searchedHeroes,
+                navController = navHostController
+            )
         }
-    ) {
-
-    }
+    )
 }
 
