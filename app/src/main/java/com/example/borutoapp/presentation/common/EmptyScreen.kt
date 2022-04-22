@@ -3,6 +3,8 @@ package com.example.borutoapp.presentation.common
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -17,15 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import com.example.borutoapp.R
+import com.example.borutoapp.domain.model.Hero
 import com.example.borutoapp.ui.theme.ERROR_ICON_SIZE
 import com.example.borutoapp.ui.theme.PADDING_SMALL
 import com.example.borutoapp.ui.theme.iconColor
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 @Composable
-fun EmptyScreen(error: LoadState.Error? = null) {
+fun EmptyScreen(error: LoadState.Error? = null, heroes: LazyPagingItems<Hero>) {
     var message by remember {
         mutableStateOf("Find your Favorite Hero!")
     }
@@ -49,40 +55,64 @@ fun EmptyScreen(error: LoadState.Error? = null) {
         startAnimation = true
     }
 
-    EmptyContent(message = message, alpha = animAlpha, icon = icon)
+    EmptyContent(message = message, alpha = animAlpha, icon = icon, error = error, heroes = heroes)
 
 
 }
 
 @Composable
-fun EmptyContent(message: String, alpha: Float, icon: Int) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            modifier = Modifier
-                .size(ERROR_ICON_SIZE)
-                .alpha(alpha = alpha),
-            painter = painterResource(id = icon),
-            contentDescription = stringResource(R.string.connection_error_ic),
-            tint = MaterialTheme.colors.iconColor
+fun EmptyContent(
+    message: String,
+    alpha: Float,
+    icon: Int,
+    error: LoadState.Error?,
+    heroes: LazyPagingItems<Hero>
+) {
 
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = PADDING_SMALL)
-                .alpha(alpha = alpha),
-            text = message,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Medium,
-            fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            color = MaterialTheme.colors.iconColor
-        )
-
+    var refreshState by remember {
+        mutableStateOf(false)
     }
+
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = refreshState),
+        onRefresh = {
+            refreshState = true
+            heroes.refresh()
+            refreshState = false
+        },
+        swipeEnabled = error != null
+
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(ERROR_ICON_SIZE)
+                    .alpha(alpha = alpha),
+                painter = painterResource(id = icon),
+                contentDescription = stringResource(R.string.connection_error_ic),
+                tint = MaterialTheme.colors.iconColor
+
+            )
+            Text(
+                modifier = Modifier
+                    .padding(top = PADDING_SMALL)
+                    .alpha(alpha = alpha),
+                text = message,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Medium,
+                fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                color = MaterialTheme.colors.iconColor
+            )
+
+        }
+    }
+
 }
 
 private fun parseError(error: LoadState.Error): String {
@@ -93,8 +123,9 @@ private fun parseError(error: LoadState.Error): String {
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun EmptyScreenPreview() {
     EmptyScreen(error = LoadState.Error(SocketTimeoutException()))
-}
+}*/
