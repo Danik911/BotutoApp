@@ -8,9 +8,9 @@ sealed class Screen(val route: String){
 
     object Home: Screen("home_screen")
 
-    object Detail: Screen("detail_screen/{heroId}"){
+    object Detail: Screen("details_screen/{heroId}"){
         fun passArgument(heroId: Int): String{
-            return "detail/$heroId"
+            return "details_screen/$heroId"
         }
     }
     object Search: Screen("search_screen")

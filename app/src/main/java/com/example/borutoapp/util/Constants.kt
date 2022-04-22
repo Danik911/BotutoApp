@@ -14,4 +14,5 @@ object Constants {
     const val BORUTO_PREFERENCES_KEY = "boruto_preferences_key"
 
     const val ITEMS_PAGE_SIZE = 3
+    const val ABOUT_TEXT_MAX_LINES = 7
 }
