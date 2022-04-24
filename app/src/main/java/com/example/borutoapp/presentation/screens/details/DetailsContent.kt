@@ -1,12 +1,15 @@
 package com.example.borutoapp.presentation.screens.details
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -16,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -26,6 +30,7 @@ import com.example.borutoapp.presentation.components.OrderedList
 import com.example.borutoapp.ui.theme.*
 import com.example.borutoapp.util.Constants.ABOUT_TEXT_MAX_LINES
 import com.example.borutoapp.util.Constants.BASE_URL
+import com.example.borutoapp.util.Constants.MIN_HEIGHT_FRACTION_VALUE
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -37,9 +42,15 @@ fun DetailsContent(
     val bottomSheetState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Expanded)
     )
+    val imageFraction = bottomSheetState.bottomSheetFraction
 
+    val cornerShape by animateDpAsState(
+        targetValue = if (imageFraction == 1f) PADDING_EXTRA_LARGE
+        else 0.dp
+    )
     BottomSheetScaffold(
         scaffoldState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = cornerShape, topEnd = cornerShape),
         sheetContent = {
             if (selectedHero != null) {
                 BottomSheetContent(selectedHero = selectedHero)
@@ -47,7 +58,7 @@ fun DetailsContent(
         },
         content = {
             if (selectedHero != null) {
-                BackgroundContent(imageString = selectedHero.image) {
+                BackgroundContent(imageString = selectedHero.image, imageFraction = imageFraction) {
                     navHostController.popBackStack()
                 }
             }
@@ -181,16 +192,20 @@ fun BackgroundContent(
         Image(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(fraction = imageFraction),
+                .fillMaxHeight(fraction = imageFraction + MIN_HEIGHT_FRACTION_VALUE)
+                .align(alignment = Alignment.TopStart),
             painter = painter,
             contentDescription = stringResource(id = R.string.hero_image),
-            contentScale = ContentScale.Crop, alignment = Alignment.TopCenter
-        )
+            contentScale = ContentScale.Crop,
+
+            )
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
         ) {
             IconButton(
-                modifier = Modifier.size(INFO_BOX_ICON_SIZE),
+                modifier = Modifier
+                    .padding(all = PADDING_SMALL)
+                    .size(INFO_BOX_ICON_SIZE),
                 onClick = { onCloseClicked() }
             ) {
                 Icon(
@@ -204,6 +219,22 @@ fun BackgroundContent(
 
 
 }
+
+@OptIn(ExperimentalMaterialApi::class)
+val BottomSheetScaffoldState.bottomSheetFraction: Float
+    get() {
+        val bottomSheerFraction = bottomSheetState.progress.fraction
+        val bottomSheetTargetValue = bottomSheetState.targetValue
+        val bottomSheetCurrentValue = bottomSheetState.currentValue
+
+        return when {
+            bottomSheetTargetValue == BottomSheetValue.Collapsed && bottomSheetCurrentValue == BottomSheetValue.Collapsed -> 1f
+            bottomSheetTargetValue == BottomSheetValue.Expanded && bottomSheetCurrentValue == BottomSheetValue.Expanded -> 0f
+            bottomSheetTargetValue == BottomSheetValue.Collapsed && bottomSheetCurrentValue == BottomSheetValue.Expanded -> 0f + bottomSheerFraction
+            bottomSheetTargetValue == BottomSheetValue.Expanded && bottomSheetCurrentValue == BottomSheetValue.Collapsed -> 1f - bottomSheerFraction
+            else -> bottomSheerFraction
+        }
+    }
 
 @Preview(showBackground = true)
 @Composable
