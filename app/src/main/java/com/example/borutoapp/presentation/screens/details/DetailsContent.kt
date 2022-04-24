@@ -1,23 +1,31 @@
 package com.example.borutoapp.presentation.screens.details
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.borutoapp.domain.model.Hero
 import com.example.borutoapp.R
 import com.example.borutoapp.presentation.components.InfoBox
 import com.example.borutoapp.presentation.components.OrderedList
 import com.example.borutoapp.ui.theme.*
 import com.example.borutoapp.util.Constants.ABOUT_TEXT_MAX_LINES
+import com.example.borutoapp.util.Constants.BASE_URL
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -37,7 +45,13 @@ fun DetailsContent(
                 BottomSheetContent(selectedHero = selectedHero)
             }
         },
-        content = {},
+        content = {
+            if (selectedHero != null) {
+                BackgroundContent(imageString = selectedHero.image) {
+                    navHostController.popBackStack()
+                }
+            }
+        },
         sheetPeekHeight = BOTTOM_SHEET_MIN_HEIGHT
     )
 }
@@ -145,6 +159,49 @@ fun BottomSheetContent(
             )
         }
     }
+
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Composable
+fun BackgroundContent(
+    imageFraction: Float = 1f,
+    backgroundColor: Color = MaterialTheme.colors.surface,
+    imageString: String,
+    onCloseClicked: () -> Unit
+) {
+    val imageUrl = "$BASE_URL${imageString}"
+    val painter = rememberImagePainter(data = imageUrl)
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(fraction = imageFraction),
+            painter = painter,
+            contentDescription = stringResource(id = R.string.hero_image),
+            contentScale = ContentScale.Crop, alignment = Alignment.TopCenter
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(
+                modifier = Modifier.size(INFO_BOX_ICON_SIZE),
+                onClick = { onCloseClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(R.string.ic_close),
+                    tint = Color.White
+                )
+            }
+        }
+    }
+
 
 }
 

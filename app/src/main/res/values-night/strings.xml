@@ -7,5 +7,6 @@
     <string name="search_icon">Search Icon</string>
     <string name="placeholder_search">Search here...</string>
     <string name="info_icon">Info icon</string>
+    <string name="ic_close">Icon Close</string>
 
 </resources>
