@@ -1,6 +1,5 @@
 package com.example.borutoapp.presentation.screens.details
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -11,8 +10,7 @@ import com.example.borutoapp.domain.use_cases.UseCases
 import com.example.borutoapp.util.Constants.HERO_ID_ARGUMENT_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,4 +33,26 @@ class DetailsViewModel @Inject constructor(
         }
 
     }
+
+    private val _uiEvent = MutableSharedFlow<UiState>()
+    val uiEvent: SharedFlow<UiState> = _uiEvent.asSharedFlow()
+
+    private val _colorPalette = mutableStateOf<Map<String, String>>(mapOf())
+    val colorPalette: State<Map<String, String>> = _colorPalette
+
+    fun setPalette(colors: Map<String, String>) {
+        _colorPalette.value = colors
+    }
+
+    fun startUiEvent() {
+        viewModelScope.launch {
+            _uiEvent.emit(UiState.GenerateColorPalette)
+        }
+    }
+
+}
+
+
+sealed class UiState() {
+    object GenerateColorPalette : UiState()
 }

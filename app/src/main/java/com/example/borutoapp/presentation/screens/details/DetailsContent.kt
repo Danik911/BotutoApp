@@ -1,5 +1,6 @@
 package com.example.borutoapp.presentation.screens.details
 
+import android.graphics.Color.parseColor
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,8 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,34 +31,66 @@ import com.example.borutoapp.ui.theme.*
 import com.example.borutoapp.util.Constants.ABOUT_TEXT_MAX_LINES
 import com.example.borutoapp.util.Constants.BASE_URL
 import com.example.borutoapp.util.Constants.MIN_HEIGHT_FRACTION_VALUE
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DetailsContent(
     navHostController: NavHostController,
-    selectedHero: Hero?
+    selectedHero: Hero?,
+    colors: Map<String, String>
 ) {
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Expanded)
     )
+
+
     val imageFraction = bottomSheetState.bottomSheetFraction
 
     val cornerShape by animateDpAsState(
         targetValue = if (imageFraction == 1f) PADDING_EXTRA_LARGE
         else 0.dp
     )
+    var vibrantColor by remember {
+        mutableStateOf("#000000")
+    }
+    var vibrantDarkColor by remember {
+        mutableStateOf("#ffffff")
+    }
+    var vibrantOnDarkColor by remember {
+        mutableStateOf("#000000")
+    }
+    LaunchedEffect(key1 = selectedHero) {
+        vibrantColor = colors["vibrant"]!!
+        vibrantDarkColor = colors["darkVibrant"]!!
+        vibrantOnDarkColor = colors["onDarkVibrant"]!!
+
+    }
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(color = Color(parseColor(vibrantDarkColor)))
+
     BottomSheetScaffold(
         scaffoldState = bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = cornerShape, topEnd = cornerShape),
         sheetContent = {
             if (selectedHero != null) {
-                BottomSheetContent(selectedHero = selectedHero)
+                BottomSheetContent(
+                    selectedHero = selectedHero,
+                    iconColor = Color(parseColor(vibrantColor)),
+                    contentColor = Color(parseColor(vibrantOnDarkColor)),
+                    sheetBackgroundColor = Color(parseColor(vibrantDarkColor))
+                )
             }
         },
         content = {
             if (selectedHero != null) {
-                BackgroundContent(imageString = selectedHero.image, imageFraction = imageFraction) {
+                BackgroundContent(
+                    imageString = selectedHero.image,
+                    imageFraction = imageFraction,
+                    backgroundColor = Color(parseColor(vibrantDarkColor))
+                ) {
                     navHostController.popBackStack()
                 }
             }
@@ -74,7 +106,12 @@ fun BottomSheetContent(
     contentColor: Color = MaterialTheme.colors.titleColor,
     sheetBackgroundColor: Color = MaterialTheme.colors.surface
 ) {
-    Column(modifier = Modifier.padding(all = PADDING_LARGE)) {
+    Column(
+        modifier = Modifier
+            .background(sheetBackgroundColor)
+            .padding(all = PADDING_LARGE)
+    )
+    {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
