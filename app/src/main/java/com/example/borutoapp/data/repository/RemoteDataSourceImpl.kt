@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import com.example.borutoapp.data.local.BorutoDatabase
 import com.example.borutoapp.data.remote.BorutoApi
 import com.example.borutoapp.domain.model.Hero
-import com.example.borutoapp.domain.paging_source.HeroRemoteMediator
-import com.example.borutoapp.domain.paging_source.SearchHeroSource
+import com.example.borutoapp.data.paging_source.HeroRemoteMediator
+import com.example.borutoapp.data.paging_source.SearchHeroSource
 import com.example.borutoapp.domain.repository.RemoteDataSourceAbstraction
 import com.example.borutoapp.util.Constants.ITEMS_PAGE_SIZE
 import kotlinx.coroutines.flow.Flow

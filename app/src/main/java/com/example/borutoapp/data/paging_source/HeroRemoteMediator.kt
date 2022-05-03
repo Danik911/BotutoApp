@@ -1,4 +1,4 @@
-package com.example.borutoapp.domain.paging_source
+package com.example.borutoapp.data.paging_source
 
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
