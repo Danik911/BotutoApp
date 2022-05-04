@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,12 +50,19 @@ fun SearchWidget(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(APP_BAR_HEIGHT),
+            .height(APP_BAR_HEIGHT)
+            .semantics {
+                contentDescription = "SearchField"
+            },
         elevation = AppBarDefaults.TopAppBarElevation,
         color = MaterialTheme.colors.topAppBarBackgroundColor
     ) {
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics {
+                    contentDescription = "SearchTextField"
+                },
             value = text,
             textStyle = TextStyle(color = MaterialTheme.colors.topAppBarContentColor),
             singleLine = true,
@@ -80,13 +89,16 @@ fun SearchWidget(
                 )
             },
             trailingIcon = {
-                IconButton(onClick = {
-                    if (text.isNotEmpty()) {
-                        onTextChange("")
-                    } else {
-                        onCloseClick()
+                IconButton(
+                    modifier = Modifier.semantics {
+                        contentDescription = "CloseIcon"
+                    }, onClick = {
+                        if (text.isNotEmpty()) {
+                            onTextChange("")
+                        } else {
+                            onCloseClick()
+                        }
                     }
-                }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
