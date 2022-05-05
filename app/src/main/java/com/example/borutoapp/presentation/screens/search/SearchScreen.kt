@@ -3,6 +3,7 @@ package com.example.borutoapp.presentation.screens.search
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -22,7 +23,11 @@ fun SearchScreen(
     val searchedHeroes = searchViewModel.searchedHeroes.collectAsLazyPagingItems()
 
     val systemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(color = MaterialTheme.colors.topAppBarBackgroundColor)
+    val topAppBarBackgroundColor = MaterialTheme.colors.topAppBarBackgroundColor
+    SideEffect {
+        systemUiController.setStatusBarColor(color = topAppBarBackgroundColor)
+    }
+
 
     Scaffold(
         topBar = {

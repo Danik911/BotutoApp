@@ -3,6 +3,7 @@ package com.example.borutoapp.presentation.screens.home
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -19,8 +20,10 @@ fun HomeScreen(
 
     val allHeroes = viewModel.allHeroes.collectAsLazyPagingItems()
     val systemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(color = MaterialTheme.colors.topAppBarBackgroundColor)
-
+    val topAppBarBackgroundColor = MaterialTheme.colors.topAppBarBackgroundColor
+    SideEffect {
+        systemUiController.setStatusBarColor(color = topAppBarBackgroundColor)
+    }
     Scaffold(
         topBar = {
             HomeAppTopBar(onSearchClicked = { navHostController.navigate(Screen.Search.route) })

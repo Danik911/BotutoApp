@@ -21,38 +21,29 @@ val ShimmerDarkGray = Color(0xFF1D1D1D)
 
 
 val Colors.welcomeScreenBackgroundColor
-    @Composable
     get() = if (isLight) Color.White else Color.Black
 
 val Colors.titleColor
-    @Composable
     get() = if (isLight)  DarkGray else LightGray
 
 val Colors.descriptionColor
-    @Composable
     get() = if (isLight) DarkGray.copy(alpha = 0.5f) else LightGray.copy(alpha = 0.5f)
 
 val Colors.indicatorInactiveColor
-    @Composable
     get() = if (isLight) LightGray else DarkGray
 
 val Colors.indicatorActiveColor
-    @Composable
     get() = if (isLight) Purple500 else Purple700
 
 val Colors.buttonBackgroundColor
-    @Composable
     get() = if (isLight) Purple500 else Purple700
 
 val Colors.topAppBarContentColor
-    @Composable
     get() = if (isLight) Color.White else LightGray
 
 val Colors.topAppBarBackgroundColor
-    @Composable
     get() = if (isLight) Purple500 else Color.Black
 
 val Colors.iconColor
-    @Composable
     get() = if (isLight) DarkGray else LightGray
 

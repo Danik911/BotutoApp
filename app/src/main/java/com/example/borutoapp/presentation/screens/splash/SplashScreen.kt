@@ -56,33 +56,26 @@ fun SplashScreen(
 
 @Composable
 fun Splash(degrees: Float) {
-    if (isSystemInDarkTheme()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black),
-            Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = stringResource(R.string.logo_icon),
-                Modifier.rotate(degrees),
 
-                )
-        }
+    val modifier = if (isSystemInDarkTheme()) {
+        Modifier.background(Color.Black)
     } else {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(Purple700, Purple500))),
-            Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = stringResource(R.string.logo_icon),
-                Modifier.rotate(degrees),
+        Modifier.background(
+            Brush.verticalGradient(listOf(Purple700, Purple500))
+        )
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_logo),
+            contentDescription = stringResource(R.string.logo_icon),
+            Modifier.rotate(degrees),
+
             )
-        }
     }
 
 }
